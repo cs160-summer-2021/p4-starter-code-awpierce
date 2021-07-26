@@ -26,11 +26,17 @@
     var tool = new paper.Tool();
     var path = new paper.Path();
     var uid = Date.now() % 10000;
+    path.strokeColor = "#" + Math.floor((uid/10000)*16777215).toString(16);
 
-    var red = Math.random(0,255);
-    var green = Math.random(0,255);
-    var blue = Math.random(0,255);
-    path.strokeColor = new paper.Color(red, green, blue);  
+    // var red = Math.random(0,255);
+    // var green = Math.random(0,255);
+    // var blue = Math.random(0,255);
+    // path.strokeColor = new paper.Color(red, green, blue);  
+    const u_id = new Map();
+    const u_color = new Map();
+
+    u_id.set(uid, path);
+    u_color.set(uid, path.strokeColor);
     
 
     // getting the URL (you may want to use for Exercise 3)
@@ -39,21 +45,43 @@
     var socket = new WebSocket(
         'ws://' + window.location.host + '/ws/draw');
 
-    tool.onMouseDrag = function(event) { //http://paperjs.org/reference/tool/ path examples
+    
+
+    tool.onMouseMove = function(event) { //http://paperjs.org/reference/tool/ path examples
        path.add(event.point);
        // You may need to add code here if you want to pass any other information.
-       socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green + ", \"blue\" : " + blue + "}" );
+       socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + "}" );
+  
+       
     }
+   
 
     socket.onmessage = function(receivedMessage) {
         var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(received));
+        // point2 = (received.x, received.y);
         // You will probably want to add some code here to draw more lines.
-        if (uid != received.uid) {
-            path.add(received.x, received.y);
-            path.strokeColor = new paper.Color(received.red, received.green, received.blue); 
+        // for (let [u, path_new] of u_id) {
+        //     if (u != received.uid) {
+        //         path_new = new paper.Path();
+        //         path_new.add(new paper.Point(received.x, received.y));
+        //         //path.add(path_new);
+        //         path_new.strokeColor = new paper.Color(u_color.get(u));
+               
+        //     }
+
+        // }
+        for (let [u, path_new] of u_id) {
+           
+            path_new = new paper.Path();
+            path_new = new paper.Point(received.x, received.y);
+            path.add(path_new);
+            path_new.strokeColor = new paper.Color(u_color.get(u));
+               
             
         }
+
+        
     }
 
     socket.onclose = function(e) {
