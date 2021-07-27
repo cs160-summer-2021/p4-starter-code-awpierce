@@ -18,16 +18,15 @@
     <canvas id="myCanvas" width="750px" height="750px"></canvas>
 </body>
 <script>
+    // Resources used: https://stackoverflow.com/questions/4597050/how-to-check-if-the-url-contains-a-given-string,   https://drive.google.com/file/d/1RRN7vmtiT2US9zmw4fg74vZOmlcnGiHE/view. 
+    
   // setting up the canvas and one paper tool
     var canvas = document.getElementById('myCanvas');
     paper.setup(canvas);
     var tool = new paper.Tool();
     var path = new paper.Path();
     var uid = Date.now() % 10000;
-//   path.strokeColor = getRandomColor();
-    // var colo = getRandomColor();
-    // console.log("colo :" + colo);
-    // path.strokeColor = "#" + colo;
+
 
 
     var red = Math.random(0,255);
@@ -35,54 +34,47 @@
     var blue = Math.random(0,255);
     path.strokeColor = new paper.Color(red, green, blue);  
     var u_id = new Map();
-    var u_color = new Map();
-
     u_id.set(uid, path);
-    //u_color.set(uid, path.strokeColor);
-    
+    var large_screen = false;
+ 
 
     // getting the URL (you may want to use for Exercise 3)
     var url = window.location.href;
+    if (url.indexOf("size=large") > -1) {
+        large_screen = true;
+    }
 
     var socket = new WebSocket(
         'ws://' + window.location.host + '/ws/draw');
-
-        //", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue 
+ 
 
     tool.onMouseMove = function(event) { //http://paperjs.org/reference/tool/ path examples
-       path.add(event.point);
+        if (large_screen == false) {
+            path.add(event.point);
+    
        // You may need to add code here if you want to pass any other information.
-       path.strokeColor = u_id.get(uid).strokeColor;
-       socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue  +  "}" );
+            path.strokeColor = u_id.get(uid).strokeColor;
+            socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue  +  "}" );
 
-    }
+            }
+        } 
 
-    // tool.onMouseUp = function(event) {   
-    //     socket.send("{\"end\" : " + true + "}" );  
-    // } 
 
     socket.onmessage = function(receivedMessage) {
         var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(received));
-        //var received_color = received.my_color.toString(16);
-//         for (let [u, path_new] of u_id) {
-//             if (!u_id.has(received.uid)) {
-//                 path_new = new paper.Path();
-//                 //path_new.add(new paper.Point(received.x, received.y));
-//                 path_new.strokeColor = received.my_color;   
-//                 u_id.set(received.uid, path_new);    
-//             }  
-//             u_id.get(u).add(new paper.Point(received.x, received.y));  
-//         } 
-        if (!u_id.has(received.uid)) {
+ 
+        if (large_screen == true) {
+            if (!u_id.has(received.uid)) {
             path_new = new paper.Path();
             path_new.add(new paper.Point(received.x, received.y));
             path_new.strokeColor =  new paper.Color(received.red, received.green, received.blue);   
             u_id.set(received.uid, path_new);    
             }  
-            u_id.get(received.uid).add(new paper.Point(received.x, received.y)) 
+            u_id.get(received.uid).add(new paper.Point(received.x, received.y));
 
-    }
+        }
+    } 
 
     socket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
