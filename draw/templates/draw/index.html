@@ -99,6 +99,7 @@
     var url = window.location.href;
     if (url.indexOf("size=large") > -1) {
         large_screen = true;
+        document.getElementById('footer').style.display = 'none';
     }
 
     var socket = new WebSocket(
