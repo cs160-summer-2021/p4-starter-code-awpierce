@@ -10,12 +10,69 @@
     <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
-    <style type="text/css"></style>
+    <style type="text/css">
+        html {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            background-image: url("/static/draw/images/map.png");
+            margin: 0;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            background-size: cover;
+            margin: auto;
+        }
+
+        canvas[resize] {
+            width: 100%;
+            height: 100%;
+        }
+
+        #footer {
+            margin: auto;
+            background: #FFFFFF;
+            border: 3px solid #ECEAEA;
+            border-radius: 30px;
+            bottom: 0;
+            width: 90%;
+            display: block;
+            position: fixed;
+            left: 5%;
+        }
+
+        #cute {
+            background: #ECEAEA;
+            border-radius: 14px;
+            width: 85%;
+        }
+
+        #myimage {
+            width: 30px;
+            height: 30px;
+        }
+
+    </style>
 
 </head>
 <body>
     <!-- You may change the dimensions of this canvas -->
-    <canvas id="myCanvas" width="750px" height="750px"></canvas>
+    <canvas id="myCanvas" resize="true"></canvas>
+    <div class="my-auto justify-content-center" id="footer" style="padding:10px">
+        <div class="row" id="cute" style="margin:auto; padding:5px"">
+            <img src="../static/draw/images/search.png" style="padding: 4px" class="col-1 mr-auto" id="pencil">
+            <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Search Location</h2>
+		</div>
+        <div class="row" style="margin:auto; width: 85%; padding:10px">
+			<img src="../static/draw/images/pencil.png" class="col mr-auto" id="pencil">
+            <img src="../static/draw/images/eraser.png" class="col mr-auto" id="eraser">
+            <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
+            <img src="../static/draw/images/stickers.png" class="col mr-auto" id="stickers">
+            <img src="../static/draw/images/photos.png" class="col mr-auto" id="photos">
+		</div>
+    </div>
 </body>
 <script>
     // Resources used: https://stackoverflow.com/questions/4597050/how-to-check-if-the-url-contains-a-given-string,   https://drive.google.com/file/d/1RRN7vmtiT2US9zmw4fg74vZOmlcnGiHE/view. 
