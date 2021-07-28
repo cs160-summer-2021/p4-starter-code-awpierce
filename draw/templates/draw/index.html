@@ -10,6 +10,7 @@
     <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
     <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
+
     <style type="text/css">
         html {
             height: 100%;
@@ -53,6 +54,15 @@
             width: 30px;
             height: 30px;
         }
+        #pencil {
+            margin-top: 20px;
+        }
+
+        #clear {
+            margin-top: 20px;
+            width: 250px;
+            
+        }
 
     </style>
 
@@ -61,7 +71,7 @@
     <!-- You may change the dimensions of this canvas -->
     <canvas id="myCanvas" resize="true"></canvas>
     <div class="my-auto justify-content-center" id="footer" style="padding:10px">
-        <div class="row" id="cute" style="margin:auto; padding:5px"">
+        <div class="row" id="cute" style="margin:auto; padding:5px">
             <img src="../static/draw/images/search.png" style="padding: 4px" class="col-1 mr-auto" id="pencil">
             <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Search Location</h2>
 		</div>
@@ -71,9 +81,36 @@
             </div> 
 
             <div id = "clear" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
-                <img src="../static/draw/images/eraser.png" class="col mr-auto" id="clear">
+                <img src="../static/draw/images/clear.png" class="col mr-auto" id="clear">
             </div> 
-            <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
+
+            <div id = "text">
+                <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
+                <!-- Button trigger modal -->
+                <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+                    Launch demo modal
+                </button>
+                
+            </div>
+            <!-- Modal -->
+            <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                    ...
+                    </div>
+                    <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                    </div>
+                </div>
+                </div>
+            </div>
+            
             <img src="../static/draw/images/stickers.png" class="col mr-auto" id="stickers">
             <img src="../static/draw/images/photos.png" class="col mr-auto" id="photos">
 		</div>
@@ -111,7 +148,7 @@
         'ws://' + window.location.host + '/ws/draw');
  
 
-    tool.onMouseMove = function(event) { //http://paperjs.org/reference/tool/ path examples
+    tool.onMouseDrag = function(event) { //http://paperjs.org/reference/tool/ path examples
         if (large_screen == false) {
             path.add(event.point);
     
@@ -143,5 +180,8 @@
         console.error('Chat socket closed unexpectedly');
     };
 
+
+
 </script>
+<script type="text/javascript" src="{% static 'draw/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
 </html>
