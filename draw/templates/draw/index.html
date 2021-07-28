@@ -66,8 +66,13 @@
             <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Search Location</h2>
 		</div>
         <div class="row" style="margin:auto; width: 85%; padding:10px">
-			<img src="../static/draw/images/pencil.png" class="col mr-auto" id="pencil">
-            <img src="../static/draw/images/eraser.png" class="col mr-auto" id="eraser">
+			<div id = "pencil" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
+                <img src="../static/draw/images/pencil.png" class="col mr-auto" id="pencil">
+            </div> 
+
+            <div id = "eraser" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
+                <img src="../static/draw/images/eraser.png" class="col mr-auto" id="eraser">
+            </div> 
             <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
             <img src="../static/draw/images/stickers.png" class="col mr-auto" id="stickers">
             <img src="../static/draw/images/photos.png" class="col mr-auto" id="photos">
