@@ -88,7 +88,7 @@
     <div class="my-auto justify-content-center" id="footer" style="padding:10px">
         <div class="row" id="cute" style="margin:auto; padding:5px">
             <img src="../static/draw/images/search.png" style="padding: 4px" class="col-1 mr-auto" id="pencil">
-            <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Search Location</h2>
+            <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Wing Sing Dim Sum</h2>
 		</div>
         <div class="row" style="margin:auto; width: 85%; padding:10px">
 			<div id = "pencil" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
@@ -103,7 +103,7 @@
                 <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Launch demo modal
+                    Click to write review 
                 </button>
                 
             </div>
@@ -123,12 +123,12 @@
         <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Enter your Review</h5>
+            <h5 class="modal-title" id="exampleModalLabel">Enter your Review for Wing Sing Dim Sum</h5>
             <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="http://127.0.0.1:8000/draw/?size=large">
-                    <input type="text" size= "50" name="Userreview">
+                <form action="index.html" method="post">
+                    <input type="text" size= "50" name="Userreview" id= "Userreview">
                   </form>
             
             </div>
@@ -141,7 +141,7 @@
     </div>
 </body>
 <script>
-    // Resources used: https://stackoverflow.com/questions/4597050/how-to-check-if-the-url-contains-a-given-string,   https://drive.google.com/file/d/1RRN7vmtiT2US9zmw4fg74vZOmlcnGiHE/view. 
+    // Resources used: https://getbootstrap.com/docs/4.6/components/modal/, https://stackoverflow.com/questions/4597050/how-to-check-if-the-url-contains-a-given-string,   https://drive.google.com/file/d/1RRN7vmtiT2US9zmw4fg74vZOmlcnGiHE/view. 
     
   // setting up the canvas and one paper tool
     var canvas = document.getElementById('myCanvas');
@@ -150,11 +150,11 @@
     var path = new paper.Path();
     var uid = Date.now() % 10000;
 
+    var textReceive = document.getElementById('Userreview');
 
-
-    var red = Math.random(0,255);
-    var green = Math.random(0,255);
-    var blue = Math.random(0,255);
+    var red = 0;
+    var green = 0;
+    var blue = 0;
     path.strokeColor = new paper.Color(red, green, blue);  
     var u_id = new Map();
     u_id.set(uid, path);
@@ -178,7 +178,7 @@
     
        // You may need to add code here if you want to pass any other information.
             path.strokeColor = u_id.get(uid).strokeColor;
-            socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue  +  "}" );
+            socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue  + ", \"Userreview\" : " + JSON.stringify(textReceive)  +  "}" );
 
             }
         } 
@@ -187,8 +187,11 @@
     socket.onmessage = function(receivedMessage) {
         var received = JSON.parse(receivedMessage.data);
         console.log("Received: " + JSON.stringify(received));
+        
  
         if (large_screen == true) {
+            socket.addEventListener('message', function (event) { socket.display(JSON.stringif(received.Userreview)); });
+            
             if (!u_id.has(received.uid)) {
             path_new = new paper.Path();
             path_new.add(new paper.Point(received.x, received.y));
