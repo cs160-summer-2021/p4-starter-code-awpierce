@@ -2,21 +2,26 @@
 
 <!DOCTYPE html>
 <html>
+
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <title>P4 Drawing</title>
+        
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+        <title>P4 Drawing</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
-    <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
-    <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
+        
+    <link rel="stylesheet" type="text/css" href="{% static 'draw/vendor/bootstrap/css/bootstrap.min.css' %}">
+        
+    <script type="text/javascript" src="{% static 'draw/vendor/jquery/jquery-3.3.1.min.js' %}"></script>
+        
+    <script type="text/javascript" src="{% static 'draw/vendor/paper/paper-full.min.js' %}"></script>
 
 
-    <style type="text/css">
+        <style type="text/css">
         html {
             height: 100%;
             width: 100%;
         }
-        
+
         body {
             background-image: url("/static/draw/images/map.png");
             margin: 0;
@@ -54,6 +59,7 @@
             width: 30px;
             height: 30px;
         }
+
         #pencil {
             margin-top: 20px;
             margin-right: 45px;
@@ -62,153 +68,196 @@
         #clear {
             margin-top: 30px;
             width: 250px;
-            margin-right: 45px; 
+            margin-right: 45px;
         }
+
         #text {
             margin-top: 20px;
             width: 140px;
             margin-right: 45px;
         }
+
         #stickers {
             margin-top: 20px;
             margin-right: 45px;
         }
+
         #photos {
             margin-top: 20px;
             margin-right: 45px;
         }
-
-
     </style>
 
 </head>
+
 <body>
-    <!-- You may change the dimensions of this canvas -->
-    <canvas id="myCanvas" resize="true"></canvas>
+        
+    <!-- You may change the dimensions of this canvas -->
+        <canvas id="myCanvas" resize="true"></canvas>
     <div class="my-auto justify-content-center" id="footer" style="padding:10px">
         <div class="row" id="cute" style="margin:auto; padding:5px">
             <img src="../static/draw/images/search.png" style="padding: 4px" class="col-1 mr-auto" id="pencil">
             <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Wing Sing Dim Sum</h2>
-		</div>
+        </div>
         <div class="row" style="margin:auto; width: 85%; padding:10px">
-			<div id = "pencil" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
+            <div id="pencil" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
                 <img src="../static/draw/images/pencil.png" class="col mr-auto" id="pencil">
-            </div> 
+            </div>
 
-            <div id = "clear" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
+            <div id="clear" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
                 <img src="../static/draw/images/clear.png" class="col mr-auto" id="clear">
-            </div> 
+            </div>
 
-            <div id = "text">
+            <div id="text">
                 <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
                 <!-- Button trigger modal -->
                 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-                    Click to write review 
+                    Click to write review
                 </button>
-                
+
             </div>
-            
-            <div id= "stickers">
+
+            <div id="stickers">
                 <img src="../static/draw/images/stickers.png" class="col mr-auto" id="stickers">
             </div>
-            <div id= "photos">
+            <div id="photos">
                 <img src="../static/draw/images/photos.png" class="col mr-auto" id="photos">
             </div>
-        
-		</div>
+
+        </div>
 
     </div>
     <!-- Modal -->
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Enter your Review for Wing Sing Dim Sum</h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Enter your Review for Wing Sing Dim Sum</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="/action_page.php">
+                        <input type="text" size="50" name="Userreview" id="userreview" value="Enter text">
+                    </form>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary" data-dismiss="modal" id="textSaved">Save
+                        changes</button>
+                </div>
             </div>
-            <div class="modal-body">
-                <form action="index.html" method="post">
-                    <input type="text" size= "50" name="Userreview" id= "Userreview">
-                  </form>
-            
-            </div>
-            <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Save changes</button>
-            </div>
-        </div>
         </div>
     </div>
 </body>
 <script>
     // Resources used: https://getbootstrap.com/docs/4.6/components/modal/, https://stackoverflow.com/questions/4597050/how-to-check-if-the-url-contains-a-given-string,   https://drive.google.com/file/d/1RRN7vmtiT2US9zmw4fg74vZOmlcnGiHE/view. 
-    
-  // setting up the canvas and one paper tool
-    var canvas = document.getElementById('myCanvas');
-    paper.setup(canvas);
-    var tool = new paper.Tool();
-    var path = new paper.Path();
-    var uid = Date.now() % 10000;
 
-    var textReceive = document.getElementById('Userreview');
+    // setting up the canvas and one paper tool
+    var canvas = document.getElementById('myCanvas');
+    paper.setup(canvas);
+    var tool = new paper.Tool();
+    var path = new paper.Path();
+    var uid = Date.now() % 10000;
+    var drawing = false;
 
-    var red = 0;
-    var green = 0;
-    var blue = 0;
-    path.strokeColor = new paper.Color(red, green, blue);  
-    var u_id = new Map();
-    u_id.set(uid, path);
+
+    var txt = document.getElementById("textSaved");
+    if (txt.addEventListener) {
+        txt.addEventListener("click", getReview, false);
+    }
+    else if (txt.attachEvent) {
+        txt.attachEvent("onclick", getReview);
+    }
+
+
+
+    var textReceive = "";
+    function getReview() {
+        textReceive = $("#userreview").val();
+        //console.log("Helloooooo" + textReceive);
+        socket.send("{\"textReceive\" : " + JSON.stringify(textReceive) + ", \"drawing\" : " + false +"}");
+    }
+
+    // var textReceive = $("#userreview").val();
+    //console.log("rrrrrrr" + textReceive);
+
+    var red = 0;
+    var green = 0;
+    var blue = 0;
+    path.strokeColor = new paper.Color(red, green, blue);
+    var u_id = new Map();
+    u_id.set(uid, path);
     var large_screen = false;
- 
 
-    // getting the URL (you may want to use for Exercise 3)
-    var url = window.location.href;
+
+    // getting the URL (you may want to use for Exercise 3)
+    var url = window.location.href;
     if (url.indexOf("size=large") > -1) {
         large_screen = true;
         document.getElementById('footer').style.display = 'none';
     }
 
-    var socket = new WebSocket(
-        'ws://' + window.location.host + '/ws/draw');
- 
+    var socket = new WebSocket(
+        'ws://' + window.location.host + '/ws/draw');
 
-    tool.onMouseDrag = function(event) { //http://paperjs.org/reference/tool/ path examples
+
+    tool.onMouseDrag = function (event) { //http://paperjs.org/reference/tool/ path examples
         if (large_screen == false) {
             path.add(event.point);
-    
-       // You may need to add code here if you want to pass any other information.
-            path.strokeColor = u_id.get(uid).strokeColor;
-            socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green +", \"blue\" : " + blue  + ", \"Userreview\" : " + JSON.stringify(textReceive)  +  "}" );
+
+            // You may need to add code here if you want to pass any other information.
+            path.strokeColor = u_id.get(uid).strokeColor;
+            socket.send("{\"x\" : " + event.point.x + ", \"y\" : " + event.point.y + ", \"uid\" : " + uid + ", \"red\" : " + red + ", \"green\" : " + green + ", \"blue\" : " + blue + ", \"drawing\" : " + true + "}");
+            //console.log("ppppppppp: " + textReceive);
+        }
+    }
+
+    tool.onMouseUp = function (event) {
+        if (large_screen == false) {
+            path = new paper.Path(); 
+        }
+    }
+
+    var messageReceived = "";
+    socket.onmessage = function (receivedMessage) {
+        var received = JSON.parse(receivedMessage.data);
+        console.log("Received: " + JSON.stringify(received));
+
+
+        if (large_screen == true) {
+
+            if (received.drawing == false) {
+                messageReceived = JSON.stringify(received.textReceive);
+                console.log("gggggggg: " + messageReceived);
+
+                var text = new paper.PointText(new paper.Point(200, 50));
+                text.justification = 'center';
+                text.fillColor = 'black';
+                text.content = messageReceived;
 
             }
-        } 
 
+            else {
+                if (!u_id.has(received.uid)) {
+                    path_new = new paper.Path();
+                    path_new.add(new paper.Point(received.x, received.y));
+                    path_new.strokeColor = new paper.Color(received.red, received.green, received.blue);
+                    u_id.set(received.uid, path_new);
+                }
+                u_id.get(received.uid).add(new paper.Point(received.x, received.y));
 
-    socket.onmessage = function(receivedMessage) {
-        var received = JSON.parse(receivedMessage.data);
-        console.log("Received: " + JSON.stringify(received));
-        
- 
-        if (large_screen == true) {
-            socket.addEventListener('message', function (event) { socket.display(JSON.stringif(received.Userreview)); });
-            
-            if (!u_id.has(received.uid)) {
-            path_new = new paper.Path();
-            path_new.add(new paper.Point(received.x, received.y));
-            path_new.strokeColor =  new paper.Color(received.red, received.green, received.blue);   
-            u_id.set(received.uid, path_new);    
-            }  
-            u_id.get(received.uid).add(new paper.Point(received.x, received.y));
+            }
+
 
         }
-    } 
+    }
 
-    socket.onclose = function(e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-
+    socket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
 
 </script>
 <script type="text/javascript" src="{% static 'draw/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
+
 </html>
