@@ -97,7 +97,7 @@
     <div class="my-auto justify-content-center" id="footer" style="padding:10px">
         <div class="row" id="cute" style="margin:auto; padding:5px">
             <img src="../static/draw/images/search.png" style="padding: 4px" class="col-1 mr-auto" id="pencil">
-            <h2 class="col mr-auto" style="color: white; font-size: 42px; padding: 4px">Wing Sing Dim Sum</h2>
+            <h2 class="col mr-auto" style="color: rgb(70, 69, 69); font-size: 42px; padding: 4px">Wing Sing Dim Sum</h2>
         </div>
         <div class="row" style="margin:auto; width: 85%; padding:10px">
             <div id="pencil" onclick="location.href='http://127.0.0.1:8000/draw/?size=small';">
@@ -111,7 +111,7 @@
             <div id="text">
                 <img src="../static/draw/images/text.png" class="col mr-auto" id="text">
                 <!-- Button trigger modal -->
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+                <button type="button" id = "textbutton" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
                     Click to write review
                 </button>
 
@@ -189,6 +189,7 @@
     var u_id = new Map();
     u_id.set(uid, path);
     var large_screen = false;
+    //var smallscreen2 = false;
 
 
     // getting the URL (you may want to use for Exercise 3)
@@ -198,10 +199,26 @@
         document.getElementById('footer').style.display = 'none';
     }
 
+    // if (url.indexOf("size=small2") > -1) {
+    //     smallscreen2 = true;
+    //     document.getElementById('footer').style.display = 'none';
+    // }
+
     var socket = new WebSocket(
         'ws://' + window.location.host + '/ws/draw');
 
+    // if (smallscreen2) {
+    //     $('#mycanvas').onClick
+    // }
 
+    // tool.onClick = function (event) {
+
+    //     if (large_screen == false) {
+
+    //         socket.send("{\"x1\" : " + event.point.x + ", \"y2\" : " + event.point.y + ", \"drawing\" : " + false + "}");
+    //         var elemnt = document.getElementById("textbutton");
+    //     } 
+    // }
     tool.onMouseDrag = function (event) { //http://paperjs.org/reference/tool/ path examples
         if (large_screen == false) {
             path.add(event.point);
@@ -229,15 +246,17 @@
 
             if (received.drawing == false) {
                 messageReceived = JSON.stringify(received.textReceive);
-                console.log("gggggggg: " + messageReceived);
-
-                var text = new paper.PointText(new paper.Point(200, 50));
-                text.justification = 'center';
-                text.fillColor = 'black';
-                text.content = messageReceived;
+                var text = new paper.PointText(new paper.Point(680.7681884765625,230.60020446777344));
+                text.content = "Review for Wing Sing Dim Sum: " + messageReceived;
+                text.style = {
+                    fontFamily: 'Courier New',
+                    fontWeight: 'bold',
+                    fontSize: 20,
+                    fillColor: 'black',
+                    justification: 'center'
+                };
 
             }
-
             else {
                 if (!u_id.has(received.uid)) {
                     path_new = new paper.Path();
@@ -249,13 +268,15 @@
 
             }
 
-
-        }
+        } 
+        
     }
 
     socket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
+
+    
 
 </script>
 <script type="text/javascript" src="{% static 'draw/vendor/bootstrap/js/bootstrap.bundle.js' %}"></script>
